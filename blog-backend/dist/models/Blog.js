@@ -1,21 +1,19 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
-const userSchema = new mongoose_1.Schema({
-    name: {
+const blogSchema = new mongoose_1.Schema({
+    title: {
         type: String,
         required: true,
     },
-    email: {
+    content: {
         type: String,
         required: true,
-        unique: true,
     },
-    password: {
-        type: String,
+    date: {
+        type: Date,
         required: true,
-        minLength: 6,
-    },
+    }
 });
-exports.default = (0, mongoose_1.model)("user", userSchema);
-//# sourceMappingURL=User.js.map
+exports.default = (0, mongoose_1.model)("Blog", blogSchema);
+//# sourceMappingURL=Blog.js.map
