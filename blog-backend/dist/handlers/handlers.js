@@ -8,6 +8,7 @@ const schema_1 = require("../schema/schema");
 const User_1 = __importDefault(require("../models/User"));
 const Blog_1 = __importDefault(require("../models/Blog"));
 const comment_1 = __importDefault(require("../models/comment"));
+const bcryptjs_1 = require("bcryptjs");
 const Rootquery = new graphql_1.GraphQLObjectType({
     name: "Rootquery",
     fields: {
@@ -32,6 +33,34 @@ const Rootquery = new graphql_1.GraphQLObjectType({
             },
         },
     },
+});
+const mutations = new graphql_1.GraphQLObjectType({
+    name: "mutations",
+    fields: {
+        //user signup
+        signup: {
+            type: schema_1.UserType,
+            args: {
+                name: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
+                email: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
+                password: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
+            },
+            async resolve(parents, { name, email, password }) {
+                let existinguser;
+                try {
+                    existinguser = await User_1.default.findOne({ email });
+                    if (existinguser)
+                        return new Error("user already exists");
+                    const encryptedPassword = (0, bcryptjs_1.hashSync)(password);
+                    const user = new User_1.default({ name, email, password: encryptedPassword });
+                    return await user.save();
+                }
+                catch (err) {
+                    return new Error("user signup failed.Try again");
+                }
+            }
+        }
+    }
 });
 exports.default = new graphql_1.GraphQLSchema({ query: Rootquery });
 //# sourceMappingURL=handlers.js.map
