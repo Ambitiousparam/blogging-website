@@ -59,8 +59,32 @@ const mutations = new graphql_1.GraphQLObjectType({
                     return new Error("user signup failed.Try again");
                 }
             }
+        },
+        login: {
+            type: schema_1.UserType,
+            args: {
+                email: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
+                password: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) }
+            },
+            async resolve(parents, { email, password }) {
+                let existingUser;
+                try {
+                    existingUser = await User_1.default.findOne({ email });
+                    if (!existingUser)
+                        return new Error("no User registered with this email");
+                    const decryptedPassword = (0, bcryptjs_1.compareSync)(password, 
+                    // @ts-ignore
+                    existingUser?.password);
+                    if (!decryptedPassword)
+                        return new Error("incorrect password");
+                    return existingUser;
+                }
+                catch (err) {
+                    return new Error(err);
+                }
+            }
         }
     }
 });
-exports.default = new graphql_1.GraphQLSchema({ query: Rootquery });
+exports.default = new graphql_1.GraphQLSchema({ query: Rootquery, mutation: mutations });
 //# sourceMappingURL=handlers.js.map
