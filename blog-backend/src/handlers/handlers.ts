@@ -77,6 +77,25 @@ const mutations = new GraphQLObjectType({
                     return new Error(err);
                 }
             }
+        },
+        addblog:{
+            type:Blogtype,
+            args:{
+                title:{type:GraphQLNonNull(GraphQLString)},
+                content:{type:GraphQLNonNull(GraphQLString)},
+                date:{type:GraphQLNonNull(GraphQLString)},
+            },
+            async resolve(parents,{title,content,date}){
+                let blog:Document<any,any,any>
+                try{
+                blog = new Blog({title,content,date});
+                return await blog.save();
+                }catch(err){
+                    return new Error(err);
+
+                }
+            }
+
         }
     }  
 });

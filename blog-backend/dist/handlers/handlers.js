@@ -83,6 +83,24 @@ const mutations = new graphql_1.GraphQLObjectType({
                     return new Error(err);
                 }
             }
+        },
+        addblog: {
+            type: schema_1.Blogtype,
+            args: {
+                title: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
+                content: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
+                date: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
+            },
+            async resolve(parents, { title, content, date }) {
+                let blog;
+                try {
+                    blog = new Blog_1.default({ title, content, date });
+                    return await blog.save();
+                }
+                catch (err) {
+                    return new Error(err);
+                }
+            }
         }
     }
 });
