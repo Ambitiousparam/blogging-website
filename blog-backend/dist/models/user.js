@@ -1,7 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = require("mongoose");
-const userSchema = new mongoose_1.Schema({
+const mongoose = require("mongoose");
+const { Schema, model } = mongoose;
+
+const userSchema = new Schema({
     name: {
         type: String,
         required: true,
@@ -16,6 +16,8 @@ const userSchema = new mongoose_1.Schema({
         required: true,
         minLength: 6,
     },
+    blogs: [{ type: Schema.Types.ObjectId, ref: "Blog" }],
+    comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
 });
-exports.default = (0, mongoose_1.model)("user", userSchema);
-//# sourceMappingURL=User.js.map
+
+module.exports = model("User", userSchema);

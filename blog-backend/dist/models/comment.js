@@ -9,7 +9,15 @@ const commentSchema = new mongoose_1.Schema({
     date: {
         type: Date,
         required: true,
-    }
+    },
+    blog: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "Blog",
+    },
+    users: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "User"
+    },
 });
 exports.default = (0, mongoose_1.model)("Comment", commentSchema);
 //# sourceMappingURL=comment.js.map

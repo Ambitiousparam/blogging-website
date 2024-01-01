@@ -8,6 +8,15 @@ const commentSchema:Schema = new Schema({
          date:{
             type:Date,
             required:true,
-         }
+         },
+         blog:{
+            type:Schema.Types.ObjectId,
+            ref:"Blog",
+         },
+         users:{
+            type:Schema.Types.ObjectId,
+            ref:"User"
+         },
+         
 });
-export default model("Comment",commentSchema)
+export default model("Comment",commentSchema);
