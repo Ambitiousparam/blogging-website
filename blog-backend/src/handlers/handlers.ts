@@ -1,10 +1,14 @@
-import { GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLSchema, GraphQLString } from "graphql";
+import { GraphQLID, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLSchema, GraphQLString, graphql } from "graphql";
 import { Blogtype, CommentType, UserType } from "../schema/schema";
 import User from "../models/User";
 import Blog from "../models/Blog";
 import comment from "../models/comment";
 import {Document} from "mongoose";
 import {hashSync,compareSync} from "bcryptjs";
+
+type DocumentType = Document<any,any,any>
+
+
 const Rootquery = new GraphQLObjectType({
     name:"Rootquery",
     fields:{
@@ -96,6 +100,46 @@ const mutations = new GraphQLObjectType({
                 }
             }
 
+        },
+        updateblog:{
+            type:Blogtype,
+            args:{
+                id:{type:GraphQLNonNull(GraphQLID)},
+                title:{type:GraphQLNonNull(GraphQLString)},
+                content:{type:GraphQLNonNull(GraphQLString)},
+            },
+            async resolve(parent,{id,title,content}){
+                let existingBlog: DocumentType
+                try{
+                    existingBlog =await Blog.findById(id);
+                    if(!existingBlog) return new Error ("blog does not exist")
+                    return await Blog.findByIdAndUpdate(id,{
+                    title,
+                    content,
+                },{new:true}
+                );
+                }catch(err){
+                    return new Error(err);
+
+                }
+            }
+
+        },
+        deleteblog:{
+            type:Blogtype,
+            args:{
+                id:{type:GraphQLNonNull(GraphQLID)}
+            },
+            async resolve(parent,{id}){
+             let existingBlog:DocumentType
+             try{
+                existingBlog=await Blog.findById(id);
+                if(!existingBlog) return new Error ("blog not found");
+                return await Blog.findByIdAndDelete(id);
+             }catch(err){
+            return new Error(err);
+            }
+            }
         }
     }  
 });

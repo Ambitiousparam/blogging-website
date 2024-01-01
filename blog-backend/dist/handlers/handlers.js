@@ -101,6 +101,47 @@ const mutations = new graphql_1.GraphQLObjectType({
                     return new Error(err);
                 }
             }
+        },
+        updateblog: {
+            type: schema_1.Blogtype,
+            args: {
+                id: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLID) },
+                title: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
+                content: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
+            },
+            async resolve(parent, { id, title, content }) {
+                let existingBlog;
+                try {
+                    existingBlog = await Blog_1.default.findById(id);
+                    if (!existingBlog)
+                        return new Error("blog does not exist");
+                    return await Blog_1.default.findByIdAndUpdate(id, {
+                        title,
+                        content,
+                    }, { new: true });
+                }
+                catch (err) {
+                    return new Error(err);
+                }
+            }
+        },
+        deleteblog: {
+            type: schema_1.Blogtype,
+            args: {
+                id: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLID) }
+            },
+            async resolve(parent, { id }) {
+                let existingBlog;
+                try {
+                    existingBlog = await Blog_1.default.findById(id);
+                    if (!existingBlog)
+                        return new Error("blog not found");
+                    return await Blog_1.default.findByIdAndDelete(id);
+                }
+                catch (err) {
+                    return new Error(err);
+                }
+            }
         }
     }
 });
