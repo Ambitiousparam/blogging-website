@@ -14,9 +14,9 @@ const commentSchema = new mongoose_1.Schema({
         type: mongoose_1.Schema.Types.ObjectId,
         ref: "Blog",
     },
-    users: {
+    user: {
         type: mongoose_1.Schema.Types.ObjectId,
-        ref: "User"
+        ref: "User",
     },
 });
 exports.default = (0, mongoose_1.model)("Comment", commentSchema);

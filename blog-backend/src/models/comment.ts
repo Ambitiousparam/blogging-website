@@ -13,9 +13,9 @@ const commentSchema:Schema = new Schema({
             type:Schema.Types.ObjectId,
             ref:"Blog",
          },
-         users:{
+         user:{
             type:Schema.Types.ObjectId,
-            ref:"User"
+            ref:"User",
          },
          
 });

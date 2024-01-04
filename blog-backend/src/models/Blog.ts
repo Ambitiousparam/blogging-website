@@ -5,7 +5,6 @@ const blogSchema:Schema= new Schema({
      title:{
         type:String,
         required:true,
-
      },
      content:{
         type:String,

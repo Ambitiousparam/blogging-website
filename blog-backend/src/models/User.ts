@@ -1,4 +1,5 @@
 import { Schema,model } from "mongoose";
+import Blog from "./Blog";
 const userSchema: Schema = new Schema ({
     name:{
         type:String,
@@ -14,5 +15,11 @@ const userSchema: Schema = new Schema ({
         required:true,
         minLength:6,
     },
+    blogs:[{
+        type:Schema.Types.ObjectId,ref:"Blog"
+    }],
+    comments:[{
+        type:Schema.Types.ObjectId,ref:"comment"
+    }],
 });
 export default model("user",userSchema);

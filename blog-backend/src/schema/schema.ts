@@ -1,4 +1,6 @@
-import { GraphQLID, GraphQLObjectType, GraphQLString,GraphQLNonNull } from "graphql";
+import { GraphQLID, GraphQLObjectType, GraphQLString,GraphQLNonNull, GraphQLList } from "graphql";
+import Blog from "../models/Blog";
+import User from "../models/User";
 
 export const UserType = new GraphQLObjectType({
     name:"UserType",
@@ -7,6 +9,12 @@ export const UserType = new GraphQLObjectType({
         name:{type:GraphQLNonNull(GraphQLString)},
         email:{type:GraphQLNonNull(GraphQLString)},
         password:{type:GraphQLNonNull(GraphQLString)},
+        blogs:{
+            type:GraphQLList(Blogtype),
+            async resolve(parent){
+                return await Blog.find(user.find)
+            }
+        }
     }),
 });
 export const Blogtype = new GraphQLObjectType({

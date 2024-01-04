@@ -1,7 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommentType = exports.Blogtype = exports.UserType = void 0;
 const graphql_1 = require("graphql");
+const Blog_1 = __importDefault(require("../models/Blog"));
 exports.UserType = new graphql_1.GraphQLObjectType({
     name: "UserType",
     fields: () => ({
@@ -9,6 +13,12 @@ exports.UserType = new graphql_1.GraphQLObjectType({
         name: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
         email: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
         password: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
+        blogs: {
+            type: (0, graphql_1.GraphQLList)(exports.Blogtype),
+            async resolve(parent) {
+                return await Blog_1.default.find(user.find);
+            }
+        }
     }),
 });
 exports.Blogtype = new graphql_1.GraphQLObjectType({
