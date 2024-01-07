@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommentType = exports.Blogtype = exports.UserType = void 0;
 const graphql_1 = require("graphql");
 const Blog_1 = __importDefault(require("../models/Blog"));
+const User_1 = __importDefault(require("../models/User"));
+const comment_1 = __importDefault(require("../models/comment"));
 exports.UserType = new graphql_1.GraphQLObjectType({
     name: "UserType",
     fields: () => ({
@@ -16,7 +18,13 @@ exports.UserType = new graphql_1.GraphQLObjectType({
         blogs: {
             type: (0, graphql_1.GraphQLList)(exports.Blogtype),
             async resolve(parent) {
-                return await Blog_1.default.find(user.find);
+                return await Blog_1.default.find({ user: parent.id });
+            }
+        },
+        comments: {
+            type: (0, graphql_1.GraphQLList)(exports.CommentType),
+            async resolve(parent) {
+                return await comment_1.default.find({ user: parent.id });
             }
         }
     }),
@@ -28,6 +36,18 @@ exports.Blogtype = new graphql_1.GraphQLObjectType({
         title: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
         content: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
         date: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
+        user: {
+            type: exports.UserType,
+            async resolve(parent) {
+                return await User_1.default.findById(parent.user);
+            }
+        },
+        comment: {
+            type: (0, graphql_1.GraphQLList)(exports.CommentType),
+            async resolve(parent) {
+                return comment_1.default.find({ blog: parent.id });
+            }
+        }
     })
 });
 exports.CommentType = new graphql_1.GraphQLObjectType({
@@ -35,6 +55,18 @@ exports.CommentType = new graphql_1.GraphQLObjectType({
     fields: ({
         id: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLID) },
         text: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
+        user: {
+            type: exports.UserType,
+            async resolve(parent) {
+                return await User_1.default.findById(parent.user);
+            },
+        },
+        blog: {
+            type: exports.Blogtype,
+            async resolve(parent) {
+                return await Blog_1.default.findById(parent.blog);
+            }
+        }
     })
 });
 //# sourceMappingURL=schema.js.map
