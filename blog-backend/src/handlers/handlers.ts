@@ -154,12 +154,14 @@ const mutations = new GraphQLObjectType({
                 //@ts-ignore
                 const existinguser = existingBlog?.user;
                 if(!existinguser) return new Error ("no user linked to this blog")
-                   
-
                 if(!existingBlog) return new Error ("blog not found");
-                return await Blog.findByIdAndDelete(id);
+                existinguser.blogs.pull(existingBlog);
+                await existinguser.save({ session });
+                return await Blog.findByIdAndDelete({session});
              }catch(err){
             return new Error(err);
+            }finally{
+                session.commitTransaction();
             }
             }
         }
