@@ -2,7 +2,6 @@ import { GraphQLID, GraphQLObjectType, GraphQLString,GraphQLNonNull, GraphQLList
 import Blog from "../models/Blog";
 import User from "../models/User";
 import Comment from "../models/comment";
-import comment from "../models/comment";
 
 export const UserType = new GraphQLObjectType({
     name:"UserType",

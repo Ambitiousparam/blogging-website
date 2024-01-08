@@ -3,8 +3,10 @@ import { Blogtype, CommentType, UserType } from "../schema/schema";
 import User from "../models/User";
 import Blog from "../models/Blog";
 import comment from "../models/comment";
-import {Document} from "mongoose";
-import {hashSync,compareSync} from "bcryptjs";
+import {Document, startSession} from "mongoose";
+import {hashSync,compareSync} from "bcryptjs";  
+
+
 
 type DocumentType = Document<any,any,any>
 
@@ -88,14 +90,28 @@ const mutations = new GraphQLObjectType({
                 title:{type:GraphQLNonNull(GraphQLString)},
                 content:{type:GraphQLNonNull(GraphQLString)},
                 date:{type:GraphQLNonNull(GraphQLString)},
+                user:{type:GraphQLNonNull(GraphQLID)}
             },
-            async resolve(parents,{title,content,date}){
+            async resolve(parents,{title,content,date,user}){
                 let blog:Document<any,any,any>
+                const session = await  startSession();
                 try{
-                blog = new Blog({title,content,date});
+                session.startTransaction({session});
+                    
+                blog = new Blog({title,content,date,user});
+                const existingUser = await User.findById(user);
+                if (!existingUser) return new Error("user not found! Exiting ")
+                
+                
+                existingUser.blogs.push(blog);
+                await existingUser.save({session});
                 return await blog.save();
+
+                
                 }catch(err){
                     return new Error(err);
+                }finally{
+                    await session.commitTransaction();
 
                 }
             }
@@ -131,9 +147,15 @@ const mutations = new GraphQLObjectType({
                 id:{type:GraphQLNonNull(GraphQLID)}
             },
             async resolve(parent,{id}){
-             let existingBlog:DocumentType
+             let existingBlog:DocumentType;
+             const session = await startSession();
              try{
-                existingBlog=await Blog.findById(id);
+                existingBlog = await Blog.findById(id).populate("user");
+                //@ts-ignore
+                const existinguser = existingBlog?.user;
+                if(!existinguser) return new Error ("no user linked to this blog")
+                   
+
                 if(!existingBlog) return new Error ("blog not found");
                 return await Blog.findByIdAndDelete(id);
              }catch(err){
