@@ -2,7 +2,7 @@ import { GraphQLID, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLSchem
 import { Blogtype, CommentType, UserType } from "../schema/schema";
 import User from "../models/User";
 import Blog from "../models/Blog";
-import comment from "../models/comment";
+import Comment from "../models/comment";
 import {Document, startSession} from "mongoose";
 import {hashSync,compareSync} from "bcryptjs";  
 
@@ -31,7 +31,7 @@ const Rootquery = new GraphQLObjectType({
      comments:{
         type:GraphQLList(CommentType),
         async resolve(){
-            return await comment.find();
+            return await Comment.find();
         },
     },
     },
@@ -173,13 +173,47 @@ const mutations = new GraphQLObjectType({
                     await session.endSession();
                 }
             }
-        }
-        commenttoblog:{
-            type:CommentType
-            args:{
-                
+        },
+       addcommenttoblog:{
+        type:CommentType,
+        args:{
+            blog:{ type:GraphQLNonNull(GraphQLID) },
+            user:{type:GraphQLNonNull(GraphQLID )},
+            text:{type:GraphQLNonNull(GraphQLString)},
+            date:{type:GraphQLNonNull(GraphQLString )},
+        },
+        async resolve (parent,{user,blog,text,date}){
+            const session = await startSession(); 
+            let comment :DocumentType;
+            try{
+                session.startTransaction({session});
+                const existinguser = await User.findById(user);
+                const existingBlog= await Blog.findById(blog);
+                if(!existingBlog || existinguser) 
+                  return  new Error("user does not exist");
+
+                comment = new Comment({
+                    text,
+                    date,
+                    blog,
+                    user,
+                });
+                existinguser.comments.push(comment);
+                existingBlog.comments.pus(Blog);
+                await existingBlog.save({session});
+                await existinguser.save({session});
+                return await comment.save({session});
+
+            }catch(err){
+                return new Error(err);
+            }finally {
+                await session.commitTransaction();
+
             }
+
+
         }
+       },
         
     }  
 });

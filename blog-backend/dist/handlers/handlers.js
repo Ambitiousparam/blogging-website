@@ -169,10 +169,43 @@ const mutations = new graphql_1.GraphQLObjectType({
                 }
             }
         },
-        commenttoblog: {
+        addcommenttoblog: {
             type: schema_1.CommentType,
-            args: {}
-        }
+            args: {
+                blog: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLID) },
+                user: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLID) },
+                text: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
+                date: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
+            },
+            async resolve(parent, { user, blog, text, date }) {
+                const session = await (0, mongoose_1.startSession)();
+                let comment;
+                try {
+                    session.startTransaction({ session });
+                    const existinguser = await User_1.default.findById(user);
+                    const existingBlog = await Blog_1.default.findById(blog);
+                    if (!existingBlog || existinguser)
+                        return new Error("user does not exist");
+                    comment = new comment_1.default({
+                        text,
+                        date,
+                        blog,
+                        user,
+                    });
+                    existinguser.comments.push(comment);
+                    existingBlog.comments.pus(Blog_1.default);
+                    await existingBlog.save({ session });
+                    await existinguser.save({ session });
+                    return await comment.save({ session });
+                }
+                catch (err) {
+                    return new Error(err);
+                }
+                finally {
+                    await session.commitTransaction();
+                }
+            }
+        },
     }
 });
 exports.default = new graphql_1.GraphQLSchema({ query: Rootquery, mutation: mutations });
