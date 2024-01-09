@@ -148,22 +148,30 @@ const mutations = new graphql_1.GraphQLObjectType({
                 try {
                     existingBlog = await Blog_1.default.findById(id).populate("user");
                     //@ts-ignore
-                    const existinguser = existingBlog?.user;
-                    if (!existinguser)
-                        return new Error("no user linked to this blog");
+                    const existingUser = existingBlog?.user;
+                    if (!existingUser)
+                        return new Error("No user linked to this blog");
                     if (!existingBlog)
-                        return new Error("blog not found");
-                    existinguser.blogs.pull(existingBlog);
-                    await existinguser.save({ session });
-                    return await Blog_1.default.findByIdAndDelete({ session });
+                        return new Error("Blog not found");
+                    await session.startTransaction();
+                    existingUser.blogs.pull(existingBlog);
+                    await existingUser.save({ session });
+                    const deletedBlog = await Blog_1.default.findByIdAndDelete(id, { session });
+                    await session.commitTransaction();
+                    return deletedBlog;
                 }
                 catch (err) {
+                    // Handle errors during the transaction or other errors
                     return new Error(err);
                 }
                 finally {
-                    session.commitTransaction();
+                    await session.endSession();
                 }
             }
+        },
+        commenttoblog: {
+            type: schema_1.CommentType,
+            args: {}
         }
     }
 });

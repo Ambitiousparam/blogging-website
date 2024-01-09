@@ -141,30 +141,46 @@ const mutations = new GraphQLObjectType({
             }
 
         },
-        deleteblog:{
-            type:Blogtype,
-            args:{
-                id:{type:GraphQLNonNull(GraphQLID)}
+        deleteblog: {
+            type: Blogtype,
+            args: {
+                id: { type: GraphQLNonNull(GraphQLID) }
             },
-            async resolve(parent,{id}){
-             let existingBlog:DocumentType;
-             const session = await startSession();
-             try{
-                existingBlog = await Blog.findById(id).populate("user");
-                //@ts-ignore
-                const existinguser = existingBlog?.user;
-                if(!existinguser) return new Error ("no user linked to this blog")
-                if(!existingBlog) return new Error ("blog not found");
-                existinguser.blogs.pull(existingBlog);
-                await existinguser.save({ session });
-                return await Blog.findByIdAndDelete({session});
-             }catch(err){
-            return new Error(err);
-            }finally{
-                session.commitTransaction();
-            }
+            async resolve(parent, { id }) {
+                let existingBlog: DocumentType;
+                const session = await startSession();
+                try {
+                    existingBlog = await Blog.findById(id).populate("user");
+                    //@ts-ignore
+                    const existingUser = existingBlog?.user;
+                    
+                    if (!existingUser) return new Error("No user linked to this blog");
+                    if (!existingBlog) return new Error("Blog not found");
+        
+                    await session.startTransaction();
+                    
+                    existingUser.blogs.pull(existingBlog);
+                    await existingUser.save({ session });
+        
+                    const deletedBlog = await Blog.findByIdAndDelete(id, { session });
+        
+                    await session.commitTransaction();
+                    return deletedBlog;
+                } catch (err) {
+                    // Handle errors during the transaction or other errors
+                    return new Error(err);
+                } finally {
+                    await session.endSession();
+                }
             }
         }
+        commenttoblog:{
+            type:CommentType
+            args:{
+                
+            }
+        }
+        
     }  
 });
 export default new GraphQLSchema({query:Rootquery,mutation:mutations});
