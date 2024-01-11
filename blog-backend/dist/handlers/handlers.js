@@ -184,7 +184,7 @@ const mutations = new graphql_1.GraphQLObjectType({
                     session.startTransaction({ session });
                     const existinguser = await User_1.default.findById(user);
                     const existingBlog = await Blog_1.default.findById(blog);
-                    if (!existingBlog || existinguser)
+                    if (!existingBlog || !existinguser)
                         return new Error("user does not exist");
                     comment = new comment_1.default({
                         text,
@@ -193,7 +193,7 @@ const mutations = new graphql_1.GraphQLObjectType({
                         user,
                     });
                     existinguser.comments.push(comment);
-                    existingBlog.comments.pus(Blog_1.default);
+                    existingBlog.comments.push(comment);
                     await existingBlog.save({ session });
                     await existinguser.save({ session });
                     return await comment.save({ session });

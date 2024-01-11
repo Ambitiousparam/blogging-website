@@ -177,7 +177,7 @@ const mutations = new GraphQLObjectType({
        addcommenttoblog:{
         type:CommentType,
         args:{
-            blog:{ type:GraphQLNonNull(GraphQLID) },
+            blog:{type:GraphQLNonNull(GraphQLID) },
             user:{type:GraphQLNonNull(GraphQLID )},
             text:{type:GraphQLNonNull(GraphQLString)},
             date:{type:GraphQLNonNull(GraphQLString )},
@@ -189,7 +189,7 @@ const mutations = new GraphQLObjectType({
                 session.startTransaction({session});
                 const existinguser = await User.findById(user);
                 const existingBlog= await Blog.findById(blog);
-                if(!existingBlog || existinguser) 
+                if(!existingBlog || !existinguser) 
                   return  new Error("user does not exist");
 
                 comment = new Comment({
@@ -199,19 +199,16 @@ const mutations = new GraphQLObjectType({
                     user,
                 });
                 existinguser.comments.push(comment);
-                existingBlog.comments.pus(Blog);
+                existingBlog.comments.push(comment);
                 await existingBlog.save({session});
                 await existinguser.save({session});
                 return await comment.save({session});
-
             }catch(err){
                 return new Error(err);
             }finally {
                 await session.commitTransaction();
 
             }
-
-
         }
        },
         
