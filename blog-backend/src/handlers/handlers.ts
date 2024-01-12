@@ -211,6 +211,28 @@ const mutations = new GraphQLObjectType({
             }
         }
        },
+       deletecomment:{
+        type:CommentType,
+        args:{
+            id:{type:GraphQLNonNull(GraphQLID)}
+        },
+        async resolve(parent,{id}){
+        let comment :DocumentType;
+        const session = await startSession();
+        try{
+            session.startTransaction({session});
+            comment = await Comment.findById(id);
+
+            if(!comment) return new Error("comment does not exist");
+            const existingUser = await User.findById()
+
+        }catch(err){
+
+        }finally {
+            await session.commitTransaction();
+        }
+        }
+       }
         
     }  
 });
