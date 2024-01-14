@@ -206,6 +206,41 @@ const mutations = new graphql_1.GraphQLObjectType({
                 }
             }
         },
+        deletecomment: {
+            type: schema_1.CommentType,
+            args: {
+                id: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLID) }
+            },
+            async resolve(parent, { id }) {
+                let comment;
+                const session = await (0, mongoose_1.startSession)();
+                try {
+                    session.startTransaction({ session });
+                    comment = await comment_1.default.findById(id);
+                    if (!comment)
+                        return new Error("comment does not exist");
+                    //@ts-ignore
+                    const existingUser = await User_1.default.findById(comment?.user);
+                    if (!existingUser)
+                        return new Error("user not found");
+                    //@ts-ignore
+                    const existingBlog = await Blog_1.default.findById(comment?.blog);
+                    if (!existingBlog)
+                        return new Error("blog not found");
+                    existingUser.comments.pull(comment);
+                    existingBlog.comments.pull(comment);
+                    await existingUser.save({ session });
+                    await existingBlog.save({ session });
+                    return await comment.deleteOne({ id: comment.id });
+                }
+                catch (err) {
+                    return new Error(err);
+                }
+                finally {
+                    await session.commitTransaction();
+                }
+            }
+        }
     }
 });
 exports.default = new graphql_1.GraphQLSchema({ query: Rootquery, mutation: mutations });

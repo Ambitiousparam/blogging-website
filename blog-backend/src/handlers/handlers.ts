@@ -224,9 +224,21 @@ const mutations = new GraphQLObjectType({
             comment = await Comment.findById(id);
 
             if(!comment) return new Error("comment does not exist");
-            const existingUser = await User.findById()
+            //@ts-ignore
+            const existingUser = await User.findById(comment?.user);
+            if(!existingUser) return new Error("user not found");
+             //@ts-ignore
+            const existingBlog = await Blog.findById(comment?.blog);
+            if(!existingBlog) return new Error("blog not found");
+
+            existingUser.comments.pull(comment);
+            existingBlog.comments.pull(comment);
+            await existingUser.save({session});
+            await existingBlog.save({session});
+            return await comment.deleteOne({id:comment.id});
 
         }catch(err){
+            return new Error(err);
 
         }finally {
             await session.commitTransaction();
