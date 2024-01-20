@@ -1,8 +1,9 @@
+import Homepage from "./components/home/Homepage";
 
 function App() {
   return (
     <div >
-       starting the frontend part
+       <Homepage/>
     </div>
   );
 }
