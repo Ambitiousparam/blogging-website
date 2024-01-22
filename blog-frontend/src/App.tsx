@@ -1,9 +1,13 @@
 import Homepage from "./components/home/Homepage";
+import Header from "./components/header/header"; 
 
 function App() {
   return (
     <div >
-       <Homepage/>
+      <header>
+        <Header/>
+      </header>
+      <Homepage/>
     </div>
   );
 }
