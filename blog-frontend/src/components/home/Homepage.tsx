@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material"
 import { homepageStyles } from "../../styles/homepage-styles"
+import Footer from "./Footer";
 
 
 
@@ -25,6 +26,7 @@ const Homepage = () => {
         style={homepageStyles.image} src="/articles.png" alt="articles" />
        
       </Box>
+      <Footer/>
     </Box>
   )
 }
