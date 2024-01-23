@@ -2,6 +2,8 @@ import { AppBar, Box, Tab, Tabs, Toolbar,Button} from "@mui/material"
 import { headerstyles } from "../../styles/header-styles";
 import { useState } from "react";
 import { FaSignInAlt } from "react-icons/fa";
+import {Link} from"react-router-dom";
+
 
 
 const Header = () => {
@@ -15,10 +17,13 @@ const Header = () => {
                 TabIndicatorProps={{style:{ backgroundColor:"white"}}}
                 indicatorColor="primary" value = {value}
                 onChange={(e,val)=>setvalue(val)}>
-                    <Tab disableRipple label="Home" />
-                    <Tab disableRipple label="Blogs" /> 
+                    {/*@ts-ignore*/}
+                    <Tab LinkComponent={Link} to ="/" disableRipple label="Home" />
+                    {/*@ts-ignore*/}
+                    <Tab LinkComponent={Link} to="/blogs" disableRipple label="Blogs" /> 
                 </Tabs>
-                <Button startIcon={<FaSignInAlt/>} sx ={headerstyles.authbtn}>Auth</Button>
+                  {/*@ts-ignore*/}
+                <Button  LinkComponent = {Link} to ="/auth"startIcon={<FaSignInAlt/>} sx ={headerstyles.authbtn}>Auth</Button>
             </Box>
         </Toolbar>
     </AppBar>
