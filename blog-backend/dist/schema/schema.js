@@ -3,11 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CommentType = exports.Blogtype = exports.UserType = void 0;
+exports.CommentType = exports.BlogType = exports.UserType = void 0;
 const graphql_1 = require("graphql");
 const Blog_1 = __importDefault(require("../models/Blog"));
-const User_1 = __importDefault(require("../models/User"));
 const comment_1 = __importDefault(require("../models/comment"));
+const User_1 = __importDefault(require("../models/User"));
 exports.UserType = new graphql_1.GraphQLObjectType({
     name: "UserType",
     fields: () => ({
@@ -16,20 +16,20 @@ exports.UserType = new graphql_1.GraphQLObjectType({
         email: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
         password: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
         blogs: {
-            type: (0, graphql_1.GraphQLList)(exports.Blogtype),
+            type: (0, graphql_1.GraphQLList)(exports.BlogType),
             async resolve(parent) {
                 return await Blog_1.default.find({ user: parent.id });
-            }
+            },
         },
         comments: {
             type: (0, graphql_1.GraphQLList)(exports.CommentType),
             async resolve(parent) {
                 return await comment_1.default.find({ user: parent.id });
-            }
-        }
+            },
+        },
     }),
 });
-exports.Blogtype = new graphql_1.GraphQLObjectType({
+exports.BlogType = new graphql_1.GraphQLObjectType({
     name: "BlogType",
     fields: () => ({
         id: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLID) },
@@ -40,19 +40,19 @@ exports.Blogtype = new graphql_1.GraphQLObjectType({
             type: exports.UserType,
             async resolve(parent) {
                 return await User_1.default.findById(parent.user);
-            }
+            },
         },
-        comment: {
+        comments: {
             type: (0, graphql_1.GraphQLList)(exports.CommentType),
             async resolve(parent) {
                 return comment_1.default.find({ blog: parent.id });
-            }
-        }
-    })
+            },
+        },
+    }),
 });
 exports.CommentType = new graphql_1.GraphQLObjectType({
     name: "CommentType",
-    fields: ({
+    fields: () => ({
         id: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLID) },
         text: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
         user: {
@@ -62,11 +62,11 @@ exports.CommentType = new graphql_1.GraphQLObjectType({
             },
         },
         blog: {
-            type: exports.Blogtype,
+            type: exports.BlogType,
             async resolve(parent) {
                 return await Blog_1.default.findById(parent.blog);
-            }
-        }
-    })
+            },
+        },
+    }),
 });
 //# sourceMappingURL=schema.js.map

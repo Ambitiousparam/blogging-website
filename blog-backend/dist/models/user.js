@@ -16,12 +16,8 @@ const userSchema = new mongoose_1.Schema({
         required: true,
         minLength: 6,
     },
-    blogs: [{
-            type: mongoose_1.Schema.Types.ObjectId, ref: "Blog"
-        }],
-    comments: [{
-            type: mongoose_1.Schema.Types.ObjectId, ref: "comment"
-        }],
+    blogs: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "Blog" }],
+    comments: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "Comment" }],
 });
-exports.default = (0, mongoose_1.model)("user", userSchema);
+exports.default = (0, mongoose_1.model)("User", userSchema);
 //# sourceMappingURL=User.js.map

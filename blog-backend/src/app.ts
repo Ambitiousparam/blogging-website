@@ -9,7 +9,7 @@ import cors from "cors"
 config();
 
 const app = express();
-app.use(cors({}));
+app.use(cors({})); 
 app.use("/graphql",graphqlHTTP({schema:schema,graphiql:true}));
 
 connectToDatabase().then(() => {

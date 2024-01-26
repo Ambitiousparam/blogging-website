@@ -19,5 +19,5 @@ const commentSchema = new mongoose_1.Schema({
         ref: "User",
     },
 });
-exports.default = (0, mongoose_1.model)("Comment", commentSchema);
+exports.default = (0, mongoose_1.model)("comment", commentSchema);
 //# sourceMappingURL=comment.js.map
