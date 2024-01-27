@@ -164,27 +164,28 @@ const mutations = new graphql_1.GraphQLObjectType({
                 id: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLID) },
             },
             async resolve(parent, { id }) {
-                let existingBlog;
                 const session = await (0, mongoose_1.startSession)();
                 try {
                     session.startTransaction({ session });
-                    existingBlog = await Blog_1.default.findById(id).populate("user");
-                    //@ts-ignore
-                    const existingUser = existingBlog?.user;
-                    if (!existingUser)
-                        return new Error("No user linked to this blog");
-                    if (!existingBlog)
-                        return new Error("No Blog Found");
+                    const existingBlog = await Blog_1.default.findById(id);
+                    if (!existingBlog) {
+                        throw new Error("No Blog Found");
+                    }
+                    if (!existingBlog.user) {
+                        throw new Error("No user linked to this blog");
+                    }
+                    const existingUser = existingBlog.user;
                     existingUser.blogs.pull(existingBlog);
                     await existingUser.save({ session });
-                    // return await existingBlog.remove({session})
-                    return await existingBlog.deleteOne({ id: existingBlog.id });
+                    const deletedBlog = await existingBlog.deleteOne();
+                    await session.commitTransaction();
+                    return deletedBlog;
                 }
                 catch (err) {
                     return new Error(err);
                 }
                 finally {
-                    session.commitTransaction();
+                    await session.endSession();
                 }
             },
         },
