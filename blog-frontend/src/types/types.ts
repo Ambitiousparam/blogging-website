@@ -9,6 +9,7 @@ export type UserType ={
 export type Blogtype = {
     id:string,
     title:string,
+    content:string,
     date:Date,
     user:UserType,
     comments:Commentstype[],

@@ -2,7 +2,7 @@ import Homepage from "./components/home/Homepage";
 import Header from "./components/header/header"; 
 import Footer from "./components/home/Footer";
 import { Route, Routes } from "react-router-dom";
-import Blogs from "./components/blogs/blogs";
+import Blogs from "./components/blogs/Blogs";
 import Auth from "./components/auth/auth";
 
 function App() {

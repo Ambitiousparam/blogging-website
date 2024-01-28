@@ -1,6 +1,6 @@
 import { useQuery} from "@apollo/client"
 import { GET_BLOGS } from "../graphql/queries"
-import Bloglist from "./bloglist";
+import Bloglist from "./BlogList";
 
 
 const Blogs = () => {
