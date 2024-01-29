@@ -46,7 +46,5 @@ export type Styles = {
         fontWeight:"500",
         fontSize:20,
         color:"white",
-
     },
-
 };
