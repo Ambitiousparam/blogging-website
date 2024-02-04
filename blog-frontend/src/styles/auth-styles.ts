@@ -19,13 +19,22 @@ export const authstyles: Styles ={
     },
     logotext:{
         fontFamily:"Work Sans",
-        fontSize:"30px",
+        fontSize:"25px",
+        textAlign:"center",
     },
     formcontainer:{
+        height:"100%",
         border:"1px solid #ccc",
         borderRadius:5,
-        padding:5,
-        boxShadow:"5px 5px 10px #000"
+        padding:6,
+        boxShadow:"5px 5px 10px #000",
+        mt:3,
+        mb:10,
+        display:"flex",
+        justifyContent:"center",
+        flexDirection:"column",
+        
+
     },
     form :{
         display:"flex",
@@ -34,6 +43,22 @@ export const authstyles: Styles ={
         gap:10,
         padding:4,
         alignItems:"center",
+        
+    },
+    submitbtn:{
+        display:"flex",
+        flexDirection:"column",
+        fontFamily:"work Sans",
+        width:"200px",
+        mt:1,
+        mb:1,
+        borderRadius:10,
+        bgcolor:"#273238",
+        ":hover":{
+            color:"white",
+            bgcolor:"orangered",
+            boxshadow:"10px 10px 20px #ccc",
+        }
     }
 
 };
