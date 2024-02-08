@@ -36,7 +36,7 @@ export const authstyles: Styles ={
         
 
     },
-    form :{
+    form2 :{
         display:"flex",
         flexDirection:"column",
         justifyContent:"center",

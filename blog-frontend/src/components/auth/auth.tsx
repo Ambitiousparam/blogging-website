@@ -4,8 +4,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 const Auth = () => {
-  const { formState: { errors }, handleSubmit, register } = useForm();
-  const onSubmit = (data) => {
+  const { register, formState:{ errors }, handleSubmit } = useForm();
+  const onSubmit = (data:any) => {
     console.log(data);
   };
 
@@ -21,7 +21,9 @@ const Auth = () => {
       </Box>
       <Box sx={{ ...authstyles.formcontainer, width: isBelowMd ? "50%" : "200px" }}>
         <Typography sx={authstyles.logotext}>{issignup ? "Signup" : "Login"} </Typography>
-        <form onSubmit={handleSubmit(onSubmit)} sx={authstyles.form}>
+        {/**@ts-ignore */}
+        <form onSubmit={handleSubmit(onSubmit)} style={authstyles.form}>
+
           {issignup && (
             <>
               <InputLabel aria-label="Name"></InputLabel>
@@ -39,7 +41,7 @@ const Auth = () => {
             margin="normal"
             InputProps={{ style: { borderRadius: 10 } }}
             sx={{ marginBottom: 2 }} aria-label="E-Mail" label="E-Mail"
-            {...register("email", { required: true, validate: (val) =>
+            {...register("email", { required: true, validate: (val:string) =>
               /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/.test(val) })}
 
           />
@@ -49,14 +51,22 @@ const Auth = () => {
             margin="normal"
             InputProps={{ style: { borderRadius: 10 } }}
             sx={{ marginBottom: 2 }} aria-label="Password" label="Password" type="password"
-            {...register("password", { required: true, minLength: 6 })}
+            {...register("password", { required: true, minLength: 6  })}
           />
 
-          <Button variant="outlined" sx={authstyles.submitbtn}>Submit</Button>
+          <Button type="submit" variant="outlined" sx={authstyles.submitbtn}>Submit</Button>
 
           <Button
-            onClick={() => setissignup((prev) => !prev)}
-            sx={{ ...authstyles.submitbtn, ...authstyles.switchbtn }}>Switch to {issignup ? "Login" : "Signup"}</Button>
+              onClick={() => setissignup((prev) => !prev)}
+              sx={{
+                ...authstyles.submitbtn,
+                ...authstyles.switchbtn,
+                ...(issignup ? authstyles.signupButton : authstyles.loginButton),
+              }}>
+              Switch to {issignup ? "Login" : "Signup"}
+          </Button>
+
+
         </form>
       </Box>
     </Box>
