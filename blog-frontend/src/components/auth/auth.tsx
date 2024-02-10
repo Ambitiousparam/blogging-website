@@ -2,12 +2,34 @@ import { Box, Typography, TextField, InputLabel, Button, useMediaQuery, useTheme
 import { authstyles } from '../../styles/auth-styles';
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useMutation } from "@apollo/client";
+import { USER_LOGIN } from "../graphql/mutations";
+type Inputs ={
+  name:string,
+  email:string,
+  password:string,
+}
 
 const Auth = () => {
-  const { register, formState:{ errors }, handleSubmit } = useForm();
-  const onSubmit = (data:any) => {
-    console.log(data);
-  };
+  const { 
+    register, 
+    formState:{ errors }, 
+    handleSubmit } = useForm<Inputs>();
+
+
+  const [login,loginResponse] = useMutation(USER_LOGIN);
+  const onSubmit =async ({name,email,password}:Inputs) => {
+    if(issignup){
+
+    }else
+   await login({variables:{
+    email,
+    password,
+   },
+}).then(()=>{
+console.log(loginResponse.data);
+})
+};
 
   const [issignup, setissignup] = useState(false);
   const theme = useTheme();
@@ -41,8 +63,9 @@ const Auth = () => {
             margin="normal"
             InputProps={{ style: { borderRadius: 10 } }}
             sx={{ marginBottom: 2 }} aria-label="E-Mail" label="E-Mail"
-            {...register("email", { required: true, validate: (val:string) =>
+            {...register("email", { required: true, validate: (val: string) =>
               /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/.test(val) })}
+            
 
           />
 
@@ -52,21 +75,15 @@ const Auth = () => {
             InputProps={{ style: { borderRadius: 10 } }}
             sx={{ marginBottom: 2 }} aria-label="Password" label="Password" type="password"
             {...register("password", { required: true, minLength: 6  })}
-          />
+          /> 
 
           <Button type="submit" variant="outlined" sx={authstyles.submitbtn}>Submit</Button>
 
-          <Button
-              onClick={() => setissignup((prev) => !prev)}
-              sx={{
-                ...authstyles.submitbtn,
-                ...authstyles.switchbtn,
-                ...(issignup ? authstyles.signupButton : authstyles.loginButton),
-              }}>
+          <Button onClick={() => setissignup((prev) => !prev)}
+          //@ts-ignore
+              sx={{...authstyles.submitbtn,...authstyles.switchbtn,...(issignup ? authstyles.signupButton : authstyles.loginButton)}}>
               Switch to {issignup ? "Login" : "Signup"}
           </Button>
-
-
         </form>
       </Box>
     </Box>
