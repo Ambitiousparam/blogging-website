@@ -3,7 +3,7 @@ import { authstyles } from '../../styles/auth-styles';
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
-import { USER_LOGIN } from "../graphql/mutations";
+import { USER_LOGIN, USER_SIGNUP } from "../graphql/mutations";
 type Inputs ={
   name:string,
   email:string,
@@ -18,9 +18,18 @@ const Auth = () => {
 
 
   const [login,loginResponse] = useMutation(USER_LOGIN);
+  const[signup,signupResponse]= useMutation(USER_SIGNUP);
+
+
   const onSubmit =async ({name,email,password}:Inputs) => {
     if(issignup){
-
+await signup({variables:{
+  name,
+  email,
+  password,
+}}).then(()=>{
+  console.log(signupResponse.data);
+})
     }else
    await login({variables:{
     email,
