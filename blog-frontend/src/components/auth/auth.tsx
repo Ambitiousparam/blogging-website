@@ -3,7 +3,7 @@ import { authstyles } from '../../styles/auth-styles';
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
-import { USER_LOGIN, USER_SIGNUP } from "../graphql/mutations";
+import { USER_LOGIN, USER_SIGNUP } from "../graphql/mutations"; 
 type Inputs ={
   name:string,
   email:string,
