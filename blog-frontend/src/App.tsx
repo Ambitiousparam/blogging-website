@@ -4,12 +4,23 @@ import Footer from "./components/home/Footer";
 import { Route, Routes } from "react-router-dom";
 import Blogs from "./components/blogs/Blogs";
 import Auth from "./components/auth/auth";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { authActions } from "./store/auth-slice";
 
 
 function App() {
-  const isLoggedIn = useSelector((state:any)=>state.isLoggedIn) 
+  const dispatch = useDispatch();
+  const isLoggedIn= useSelector((state:any)=>state.isLoggedIn);
   console.log(isLoggedIn);
+  useEffect(()=>{
+const data:string =localStorage.getItem("userdata") as string;
+if(JSON.parse(data)!==null){
+  dispatch(authActions.login());
+
+}
+  },[])
+ 
   return (
     <div >
       <header>
