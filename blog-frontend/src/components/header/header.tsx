@@ -3,10 +3,13 @@ import { headerstyles } from "../../styles/header-styles";
 import { useState } from "react";
 import { FaSignInAlt } from "react-icons/fa";
 import {Link} from"react-router-dom";
+import { useSelector } from "react-redux";
+import UserMenu from "./user/UserMenu";
 
 
 
 const Header = () => {
+  const isLoggedIn =useSelector((state:any)=>state.isLoggedIn);
     const [value, setvalue] = useState(0);
   return (
     <AppBar sx = {headerstyles.appBar}>
@@ -23,7 +26,7 @@ const Header = () => {
                     <Tab LinkComponent={Link} to="/blogs" disableRipple label="Blogs" /> 
                 </Tabs>
                   {/*@ts-ignore*/}
-                <Button  LinkComponent = {Link} to ="/auth"startIcon={<FaSignInAlt/>} sx ={headerstyles.authbtn}>Auth</Button>
+                {isLoggedIn ? <UserMenu/> : <Button  LinkComponent = {Link} to ="/auth"startIcon={<FaSignInAlt/>} sx ={headerstyles.authbtn}>Auth</Button>}
             </Box>
         </Toolbar>
     </AppBar>
