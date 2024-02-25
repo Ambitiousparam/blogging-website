@@ -7,7 +7,8 @@ import Auth from "./components/auth/auth";
 import { useSelector,useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { authActions } from "./store/auth-slice";
-
+import AddBlog from "./components/blogs/AddBlog";
+import Profile from "./components/header/user/Profile";
 
 function App() {
   const dispatch = useDispatch();
@@ -31,6 +32,9 @@ if(JSON.parse(data)!==null){
           <Route path = "/"  element = {<Homepage/>} />
           <Route path = "/blogs"  element = {<Blogs/>} />
           <Route path = "/auth"  element = {<Auth/>} />
+          <Route path = "/AddBlog"  element = {<AddBlog/>} />
+          <Route path = "/profile"  element = {<Profile/>} />
+
         </Routes>
       </main>
       <footer>

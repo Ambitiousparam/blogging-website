@@ -47,4 +47,6 @@ export type Styles = {
         fontSize:20,
         color:"white",
     },
+   
+    
 };
