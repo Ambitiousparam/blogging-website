@@ -11,10 +11,20 @@ mutation login($email :String!,$password:String!){\
 `
 export const USER_SIGNUP =gql`
 mutation signup($name :String!,$email :String!,$password:String!){\
-  login(name:$name,email:$email,password:$password){
+  signup(name:$name,email:$email,password:$password){
     id
-    email
+    email 
     name
   }
 }
+`
+export const ADD_BLOG =gql`
+mutation addblog($title:String!,$content:String!,$date:String!,$user:ID!){
+  addBlog(title:$title,content:$content,date:$date,user:$user){
+    title
+    
+  }
+}
+
+
 `
