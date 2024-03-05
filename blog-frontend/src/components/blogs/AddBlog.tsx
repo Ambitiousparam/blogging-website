@@ -6,6 +6,7 @@ import { useMutation } from '@apollo/client';
 
 
 
+
 const AddBlog = () => {
 
   const [addBlog] = useMutation(ADD_BLOG);
@@ -15,7 +16,7 @@ const AddBlog = () => {
     const title = headingref.current.innerText;
     const content =paragraphref.current.innerText;
     const date = new Date();
-    const user = JSON.parse(localStorage.getItem("userData") as string).id;
+    const user = JSON.parse(localStorage.getItem("userdata") as string).id;
     console.log(title,content,date,user);
     try{
       const res= await addBlog({

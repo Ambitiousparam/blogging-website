@@ -34,7 +34,7 @@ import {
           return User.findById(id).populate("blogs");
         },
       },
-  
+
       // get all blogs
       blogs: {
         type: GraphQLList(BlogType),
@@ -264,6 +264,7 @@ import {
           }
         },
       },
+       
     },
   });
   
