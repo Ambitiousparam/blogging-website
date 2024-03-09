@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { authActions } from "./store/auth-slice";
 import AddBlog from "./components/blogs/AddBlog";
 import Profile from "./components/header/user/Profile";
+import Viewblog from "./components/blogs/Viewblog";
 
 function App() {
   const dispatch = useDispatch();
@@ -23,7 +24,7 @@ if(JSON.parse(data)!==null){
   },[])
  
   return (
-    <div >
+    <div >  
       <header>
         <Header/>
       </header>
@@ -34,7 +35,7 @@ if(JSON.parse(data)!==null){
           <Route path = "/auth"  element = {<Auth/>} />
           <Route path = "/addblog"  element = {<AddBlog/>} />
           <Route path = "/profile"  element = {<Profile/>} />
-
+          <Route path = "/blog/view/:id" element = {<Viewblog/>}></Route>
         </Routes>
       </main>
       <footer>
