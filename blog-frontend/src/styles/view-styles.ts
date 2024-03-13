@@ -5,7 +5,7 @@ export const blogpagestyles :Styles={
         display:"flex",
         flexDirection:"column",
         height:"100%",
-        padding:2,
+        padding:3,
     },
     profileheader:{
         display:"flex",
@@ -13,7 +13,8 @@ export const blogpagestyles :Styles={
         padding:1,
     },
     headertext:{
-        fontFamily:"Work sans"
+        fontFamily:"Work sans",
+        marginLeft:"7px"
          
     },
     profileheaderitems:{
@@ -42,5 +43,51 @@ export const blogpagestyles :Styles={
         fontFamily:"Work sans",
         
 
+    },
+    commentbox:{
+        padding:2,
+        display:"flex",
+        alignItems:"center",
+        gap:2,
+        fontWeight:"500",
+        fontSize:"20px"
+    },
+    commentinputcontainer: {
+        padding: 2,
+        width: "100%",  
+        height: "20%",
+        fontFamily: "Work sans"
+    },
+    
+    commentinputlayout:{
+        display:"flex",
+        gap:2,
+        alignItems:"center"
+    },
+    textField:{
+        width:"100%",
+        borderRadius:"20px"
+    },
+    comments:{
+        display:"flex",
+        flexDirection:"column",
+
+    },
+    commentitem:{
+        display:"flex",
+        padding:1,
+        gap :1,
+        borderBottom:"1px solid black",
+        height:"50px",
+        margin:1,
+        alignItems:"Center", 
+
+
+    },
+    commenttext:{
+        margin:2,
+        fontWeight:"600",
+        fontFamily:"Arvo",
+        fontSize:"16px",
     }
 }
