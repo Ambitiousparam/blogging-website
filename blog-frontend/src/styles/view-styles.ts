@@ -1,3 +1,4 @@
+
 import { Styles } from "./homepage-styles";
  
 export const blogpagestyles :Styles={
@@ -80,7 +81,7 @@ export const blogpagestyles :Styles={
         borderBottom:"1px solid black",
         height:"50px",
         margin:1,
-        alignItems:"Center", 
+        alignItems:"", 
 
 
     },

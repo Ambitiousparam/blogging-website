@@ -24,9 +24,16 @@ export const ADD_BLOG =gql`
 mutation addblog($title:String!,$content:String!,$date:String!,$user:ID!){
   addBlog(title:$title,content:$content,date:$date,user:$user){
     title
-    user
-  
-    
   }
 }
 `
+export const ADD_COMMENT = gql`
+
+  mutation addCommentToBlog($text: String!, $date: String!, $user: ID!, $blog: ID!) {
+    addCommentToBlog(text: $text, date: $date, user: $user, blog: $blog) {
+      text
+      user {
+        name
+      }
+    }
+  }`

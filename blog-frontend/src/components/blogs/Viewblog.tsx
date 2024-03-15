@@ -1,15 +1,35 @@
 import { Box, Dialog, DialogContent, LinearProgress, Typography, IconButton, TextField, Avatar } from "@mui/material";
 import { blogpagestyles } from "../../styles/view-styles";
-import { useQuery } from "@apollo/client";
-import { GET_BLOG_BY_ID } from "../graphql/queries";
+import { useMutation, useQuery } from "@apollo/client";
+import { GET_BLOG_BY_ID} from "../graphql/queries";
 import { useParams } from "react-router-dom";
 import { FaComment } from "react-icons/fa";
 import { BiSend } from "react-icons/bi";
 import { MdOutlineMailOutline } from "react-icons/md";
+import { useForm} from "react-hook-form"; 
+import { ADD_COMMENT } from "../graphql/mutations";
+
+
 
 const Viewblog = () => {
+  const user:string = JSON.parse(localStorage.getItem("userdata")as string).id;
+
+  const getInitials = (name: string) => {
+    const nameParts = name.split(" ");
+    let initials = "";
+
+    for (let i = 0; i < nameParts.length; i++) {
+      initials += nameParts[i].charAt(0);
+    }
+
+    return initials.toUpperCase();
+  };
+
+  const {register,handleSubmit} = useForm();
+
   const { id } = useParams();
-  const { loading, error, data } = useQuery(GET_BLOG_BY_ID, {
+  const [addcommenttoblog,addCommentResponse] = useMutation(ADD_COMMENT);
+  const { loading, error, data,refetch } = useQuery(GET_BLOG_BY_ID, {
     variables: {
       id,
     }
@@ -25,6 +45,29 @@ const Viewblog = () => {
       </Dialog>
     );
   }
+  const  commenthandler= async (data:any)=>{ 
+    const date = new Date();
+    const text = data.comment; 
+    try{
+
+      const res = await addcommenttoblog({
+      variables:{
+        text,
+        date,
+        blog:id,
+        user,
+      },
+    
+    });
+     await refetch();
+     
+    }catch(err:any){
+    console.log(err.message);
+    
+
+    }
+  };
+
 
   return (
     data && (
@@ -50,7 +93,8 @@ const Viewblog = () => {
           <Typography  variant="h6" sx={{margin:2 }}>Add your Comment</Typography>
           <Box sx={blogpagestyles.commentinputlayout}>
             <TextField
-              multiline
+            {...register("comment")}
+              type="textarea"
               sx={blogpagestyles.textField}
               InputProps={{
                 style: {
@@ -60,7 +104,7 @@ const Viewblog = () => {
                   fontFamily: "Work Sans"
                 },
                 endAdornment: (
-                  <IconButton>
+                  <IconButton onClick={handleSubmit(commenthandler)}>
                     <BiSend size="25" />
                   </IconButton>
                 )
@@ -70,12 +114,16 @@ const Viewblog = () => {
         { data.blog.comments.length>0 && (
           <Box sx={blogpagestyles.comments}>
             {data.blog.comments.map((comment:any) => (
-              <Box sx={blogpagestyles.commentitem} key={comment.id}>
-                <Avatar sx={{ padding: 1, color: "red", bgcolor: "transparent" }}> Param</Avatar>
-                <Typography sx={blogpagestyles.commenttext}> {comment.text}</Typography>
-              </Box>
-            ))}
-          </Box>
+        <Box sx={blogpagestyles.commentitem} key={comment.id}>
+           <Avatar sx={{ width: 32, height: 32, bgcolor: "transparent", color: "red",alignContent:"center" }}>
+             {getInitials(comment.user.name)}
+           </Avatar>
+
+        <Typography sx={blogpagestyles.commenttext}> {comment.text}</Typography>
+        {user===comment.user.id && <Typography>Delete comment</Typography> }
+      </Box>
+            ))}{"  "}
+          </Box> 
         )}
       </Box>
     )

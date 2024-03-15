@@ -9,6 +9,7 @@ type Props = {
 
 
 const BlogItem = (props: Props) => {
+
   const navigate = useNavigate();
 
   const handleclick = ()=>{

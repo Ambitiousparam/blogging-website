@@ -35,7 +35,7 @@ if(JSON.parse(data)!==null){
           <Route path = "/auth"  element = {<Auth/>} />
           <Route path = "/addblog"  element = {<AddBlog/>} />
           <Route path = "/profile"  element = {<Profile/>} />
-          <Route path = "/blog/view/:id" element = {<Viewblog/>}></Route>
+          <Route path = "/blog/view/:id" element = {<Viewblog />}/>
         </Routes>
       </main>
       <footer>
