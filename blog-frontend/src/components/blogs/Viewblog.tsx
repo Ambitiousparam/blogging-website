@@ -7,7 +7,8 @@ import { FaComment } from "react-icons/fa";
 import { BiSend } from "react-icons/bi";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { useForm} from "react-hook-form"; 
-import { ADD_COMMENT } from "../graphql/mutations";
+import { ADD_COMMENT,DELETE_COMMENT } from "../graphql/mutations";
+import { MdDeleteOutline } from "react-icons/md";
 
 
 
@@ -28,7 +29,8 @@ const Viewblog = () => {
   const {register,handleSubmit} = useForm();
 
   const { id } = useParams();
-  const [addcommenttoblog,addCommentResponse] = useMutation(ADD_COMMENT);
+  const [addcommenttoblog] = useMutation(ADD_COMMENT);
+  const [deleteComment] = useMutation(DELETE_COMMENT);
   const { loading, error, data,refetch } = useQuery(GET_BLOG_BY_ID, {
     variables: {
       id,
@@ -59,14 +61,22 @@ const Viewblog = () => {
       },
     
     });
-     await refetch();
-     
+
     }catch(err:any){
     console.log(err.message);
-    
-
     }
   };
+  const handleCommentDelete = async(id:String)=>{
+  try{
+    const res = await deleteComment({variables:{
+      id,
+    },
+  });
+  await refetch();
+  }catch(err:any){
+    console.log(err.message);
+  }
+  }; 
 
 
   return (
@@ -119,8 +129,8 @@ const Viewblog = () => {
              {getInitials(comment.user.name)}
            </Avatar>
 
-        <Typography sx={blogpagestyles.commenttext}> {comment.text}</Typography>
-        {user===comment.user.id && <Typography>Delete comment</Typography> }
+        <Typography  sx={blogpagestyles.commenttext}> {comment.text}</Typography>
+        {user===comment.user.id && <IconButton onClick={async()=> await handleCommentDelete(comment.id)} sx = {{ml:"auto"}}color ="error"><MdDeleteOutline /></IconButton> }
       </Box>
             ))}{"  "}
           </Box> 
