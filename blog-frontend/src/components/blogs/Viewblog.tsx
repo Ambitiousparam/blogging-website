@@ -9,6 +9,7 @@ import { MdOutlineMailOutline } from "react-icons/md";
 import { useForm} from "react-hook-form"; 
 import { ADD_COMMENT,DELETE_COMMENT } from "../graphql/mutations";
 import { MdDeleteOutline } from "react-icons/md";
+import {toast} from "react-hot-toast";
 
 
 
@@ -52,7 +53,7 @@ const Viewblog = () => {
     const text = data.comment; 
     try{
 
-      const res = await addcommenttoblog({
+       await addcommenttoblog({
       variables:{
         text,
         date,
@@ -61,18 +62,28 @@ const Viewblog = () => {
       },
     
     });
+    toast.promise(refetch(),{
+      error:"unexpected error",
+      success:"Comment added",
+      loading:"Hold on",
+    })
 
     }catch(err:any){
     console.log(err.message);
     }
   };
-  const handleCommentDelete = async(id:String)=>{
+ 
+  const handleCommentDelete = async(id:string)=>{
   try{
-    const res = await deleteComment({variables:{
-      id,
+    await deleteComment({variables:{
+      id
     },
   });
-  await refetch();
+  toast.promise(refetch(),{
+    error:"unexpected error",
+    success:"Comment deleted ",
+    loading:"Hold on",
+  })
   }catch(err:any){
     console.log(err.message);
   }

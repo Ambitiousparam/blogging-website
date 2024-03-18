@@ -26,6 +26,7 @@ const Profile = () => {
       {data.user.blogs.map((item)=> (
       
       <BlogItem 
+      showActions={true} 
         blog ={{
         title:item.title,
         content :item.content,

@@ -253,8 +253,7 @@ const mutations = new graphql_1.GraphQLObjectType({
                     existingBlog.comments.pull(comment);
                     await existingUser.save({ session });
                     await existingBlog.save({ session });
-                    // return await comment.remove({session})
-                    return await comment.deleteOne({ id: comment.id });
+                    return await comment.deleteOne(); // Corrected here
                 }
                 catch (err) {
                     return new Error(err);

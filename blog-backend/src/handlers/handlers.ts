@@ -245,18 +245,22 @@ import {
             session.startTransaction({ session });
             comment = await Comment.findById(id);
             if (!comment) return new Error("Comment not found");
+      
             //@ts-ignore
             const existingUser = await User.findById(comment?.user);
             if (!existingUser) return new Error("User Not Found");
+      
             //@ts-ignore
             const existingBlog = await Blog.findById(comment?.blog);
             if (!existingBlog) return new Error("Blog not found");
+      
             existingUser.comments.pull(comment);
             existingBlog.comments.pull(comment);
+      
             await existingUser.save({ session });
             await existingBlog.save({ session });
-            // return await comment.remove({session})
-            return await comment.deleteOne({ id: comment.id });
+      
+            return await comment.deleteOne(); // Corrected here
           } catch (err) {
             return new Error(err);
           } finally {
@@ -264,6 +268,7 @@ import {
           }
         },
       },
+      
        
     },
   });

@@ -6,6 +6,8 @@ import {Link,useNavigate} from"react-router-dom";
 import { useSelector } from "react-redux";
 import UserMenu from "./user/UserMenu";
 import Typography from "@mui/material/Typography";
+import { FaBlogger } from "react-icons/fa6";
+
 
 
 
@@ -19,7 +21,7 @@ const Header = () => {
   return (
     <AppBar sx = {headerstyles.appBar}>
         <Toolbar>
-            <img  style ={{padding : "10px" ,height :"33px", width: "33px"}} src="blog1.png" alt="blog logo" />,
+        <FaBlogger style ={{padding : "10px" ,height :"33px", width: "33px"}} />
             <Box onClick ={handleAddBlog} sx ={headerstyles.addLink}>
                <Typography sx={{ fontFamily: 'Work Sans' }}>
                 Post New Blog

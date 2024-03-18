@@ -41,8 +41,12 @@ export const blogStyles:Styles={
         cardheader:{
             fontFamily:"Work Sans",
             fontSize:"72px",
-            height:"2",
+            height:"35%",
             padding: 1,
+            mb:1,
+            ":hover":{
+            cursor:"pointer"
+            }
             
         },
         cardcontent:{

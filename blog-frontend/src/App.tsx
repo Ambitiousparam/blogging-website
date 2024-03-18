@@ -10,6 +10,7 @@ import { authActions } from "./store/auth-slice";
 import AddBlog from "./components/blogs/AddBlog";
 import Profile from "./components/header/user/Profile";
 import Viewblog from "./components/blogs/Viewblog";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const dispatch = useDispatch();
@@ -21,10 +22,11 @@ if(JSON.parse(data)!==null){
   dispatch(authActions.login());
 
 }
-  },[]);
+  },);
  
   return (
     <div >  
+      <Toaster/>
       <header>
         <Header/>
       </header>
