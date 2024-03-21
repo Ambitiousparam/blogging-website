@@ -52,7 +52,6 @@ const Viewblog = () => {
     const date = new Date();
     const text = data.comment; 
     try{
-
        await addcommenttoblog({
       variables:{
         text,
@@ -76,14 +75,15 @@ const Viewblog = () => {
   const handleCommentDelete = async(id:string)=>{
   try{
     await deleteComment({variables:{
-      id
+      id,
+      
     },
   });
   toast.promise(refetch(),{
     error:"unexpected error",
     success:"Comment deleted ",
     loading:"Hold on",
-  })
+  });
   }catch(err:any){
     console.log(err.message);
   }

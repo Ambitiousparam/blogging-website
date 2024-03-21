@@ -46,3 +46,12 @@ export const ADD_COMMENT = gql`
     }
   }  
   `
+  export const UPDATE_BLOG=gql`
+  mutation updateBlog($id:ID!,$title:String!,$content:String!){
+    updateBlog(id:$id,title:$title,content:$content){
+      id
+    }
+    
+  }
+  
+  `

@@ -11,6 +11,7 @@ import AddBlog from "./components/blogs/AddBlog";
 import Profile from "./components/header/user/Profile";
 import Viewblog from "./components/blogs/Viewblog";
 import { Toaster } from "react-hot-toast";
+import Updateblog from "./components/blogs/Updateblog";
 
 function App() {
   const dispatch = useDispatch();
@@ -38,6 +39,8 @@ if(JSON.parse(data)!==null){
           <Route path = "/addblog"  element = {<AddBlog/>} />
           <Route path = "/profile"  element = {<Profile/>} />
           <Route path = "/blog/view/:id" element = {<Viewblog />}/>
+          <Route path = "/blog/update/:id" element = {<Updateblog />}/>
+
         </Routes>
       </main>
       <footer>
