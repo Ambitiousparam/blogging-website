@@ -51,7 +51,11 @@ export const ADD_COMMENT = gql`
     updateBlog(id:$id,title:$title,content:$content){
       id
     }
-    
   }
-  
   `
+export const DELETE_BLOG= gql`
+mutation deleteBlog($id:ID!){
+  deleteBlog(id:$id){
+    id
+  }
+}`

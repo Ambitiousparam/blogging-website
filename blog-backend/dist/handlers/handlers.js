@@ -159,36 +159,42 @@ const mutations = new graphql_1.GraphQLObjectType({
         },
         // delete blog
         deleteBlog: {
-            type: schema_1.BlogType,
-            args: {
-                id: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLID) },
-            },
-            async resolve(parent, { id }) {
-                const session = await (0, mongoose_1.startSession)();
-                try {
-                    session.startTransaction({ session });
-                    const existingBlog = await Blog_1.default.findById(id);
-                    if (!existingBlog) {
-                        throw new Error("No Blog Found");
-                    }
-                    if (!existingBlog.user) {
-                        throw new Error("No user linked to this blog");
-                    }
-                    const existingUser = existingBlog.user;
-                    existingUser.blogs.pull(existingBlog);
-                    await existingUser.save({ session });
-                    const deletedBlog = await existingBlog.deleteOne();
-                    await session.commitTransaction();
-                    return deletedBlog;
-                }
-                catch (err) {
-                    return new Error(err);
-                }
-                finally {
-                    await session.endSession();
-                }
-            },
-        },
+          type: schema_1.BlogType,
+          args: {
+              id: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLID) },
+          },
+          async resolve(parent, { id }) {
+              const session = await (0, mongoose_1.startSession)();
+              try {
+                  session.startTransaction({ session });
+                  const existingBlog = await Blog_1.default.findById(id);
+                  if (!existingBlog) {
+                      throw new Error("No Blog Found");
+                  }
+                  if (!existingBlog.user) {
+                      throw new Error("No user linked to this blog");
+                  }
+                  const existingUser = await User_1.default.findById(existingBlog.user);
+                  if (!existingUser) {
+                      throw new Error("User not found");
+                  }
+                  // Filter out the blog from user's blogs array
+                  existingUser.blogs = existingUser.blogs.filter(blog => blog.toString() !== existingBlog._id.toString());
+      
+                  await existingUser.save({ session });
+                  const deletedBlog = await existingBlog.deleteOne();
+                  await session.commitTransaction();
+                  return deletedBlog;
+              }
+              catch (err) {
+                  return new Error(err);
+              }
+              finally {
+                  await session.endSession();
+              }
+          },
+      },
+      
         //add comment to blog
         addCommentToBlog: {
             type: schema_1.CommentType,

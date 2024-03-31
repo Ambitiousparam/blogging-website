@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { blogStyles, randombgcolor } from '../../styles/blog-list-styles';
 import { FcCalendar } from "react-icons/fc";
 import {IconButton} from '@mui/material';
+import { useMutation } from '@apollo/client';
+import { DELETE_BLOG } from '../graphql/mutations';
 type Props = {
     blog: Blogtype;
     showActions?:boolean;
@@ -14,6 +16,7 @@ type Props = {
 const BlogItem = (props: Props) => {
 
   const navigate = useNavigate();
+  const [deleteBlog]= useMutation(DELETE_BLOG);
 
   const handleclick = ()=>{
     return navigate(`/blog/view/${props.blog.id}`);
@@ -23,10 +26,25 @@ const BlogItem = (props: Props) => {
     return navigate(`/blog/update/${props.blog.id}`);
 
   }
-  const deletehandler=()=>{
-    return navigate(`/blog/view/${props.blog.id}`);
+  const deletehandler = async () => {
+  try {
+    const { data } = await deleteBlog({
+      variables: {
+        id: props.blog.id
+      }
+    });
 
+    if (data && data.deleteBlog) {
+      console.log("Blog deleted successfully.");
+      navigate("/profile");
+    } else {
+      console.log("Delete operation failed or returned undefined data.");
+    }
+  } catch (err) {
+    console.error("Error deleting blog:", err);
   }
+};
+
   return ( 
     <Card  sx={blogStyles.card}>
       {props.showActions && <CardActions>
