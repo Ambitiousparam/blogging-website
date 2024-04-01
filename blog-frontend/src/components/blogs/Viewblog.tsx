@@ -14,7 +14,7 @@ import {toast} from "react-hot-toast";
 
 
 const Viewblog = () => {
-  const user:string = JSON.parse(localStorage.getItem("userdata")as string).id;
+  const user:string = JSON.parse(localStorage.getItem("userdata")as string)?.id;
 
   const getInitials = (name: string) => {
     const nameParts = name.split(" ");

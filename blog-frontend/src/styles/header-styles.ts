@@ -11,6 +11,7 @@ export const headerstyles:Styles={
         marginRight:"auto",
         justifyContent:"flex-end",
         alignItems:"center",
+        fontSize:{lg:15,md:13,sm:10,xs:10}
     },
     authbtn:{
         ml:2,

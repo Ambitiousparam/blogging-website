@@ -28,7 +28,7 @@ export type Styles = {
         bgcolor:"#404040",
        display:"flex",
        alignItems:"center",
-       gap:20,
+       gap:"30px",
        height:"20vh",
        justifyContent:"center",
        padding:0,
@@ -36,16 +36,18 @@ export type Styles = {
     footerbtns:{
         borderRadius:10,
         bgcolor:"blueviolet",
-        width:200,
+        width:"15%",
         ":hover":{
             bgcolor: "#bd63fa",
         },
+        fontSize:{lg:12,md:12,sm:8,xs:8},
+        maxwidth:"200px"
     },
     footertext:{
         fontFamily:"Work Sans",
         fontWeight:"500",
-        fontSize:20,
         color:"white",
+        fontSize:{lg:20,md:15,sm:12,xs:10} , 
     },
    
     

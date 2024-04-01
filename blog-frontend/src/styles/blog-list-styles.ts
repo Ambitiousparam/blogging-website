@@ -29,6 +29,7 @@ export const blogStyles:Styles={
     },
     card:{
         display:"flex",
+        borderRadius:"20px",
         width: "calc(25% - 20px)",
         flexDirection:"column",
         height: "70vh",
@@ -41,7 +42,7 @@ export const blogStyles:Styles={
         cardheader:{
             fontFamily:"Work Sans",
             fontSize:"72px",
-            height:"35%",
+            height:"auto",
             padding: 1,
             mb:1,
             ":hover":{
@@ -58,16 +59,40 @@ export const blogStyles:Styles={
         title:{
             fontWeight:"600",
             m:1,
+            fontSize:{lg:32,md:28,sm:22,xs:18},
             color:"white",
             textTransform:"uppercase",
-            textDecoration:"underline",
-            textUnderlineOffset:"5px",
-            fontFamily:"Work Sans",
-            textShadow:"2px 7px 20px #000"
+            fontFamily:"arvo",
+            textShadow:"2px 7px 20px #000",
+            ":hover":{
+                textDecoration:"underline",
+                textUnderlineOffset:"5px"
+            }
         },
         contentText:{
             padding:2,
+            fontfamily:"work sans",
             fontSize:"20px",
             fontWeight:"500",
         }, 
+        author:{
+            display:"flex",
+            alignItems:"Center",
+            gap:1,
+            fontWeight:"bold",
+            fontFamily:"work sans",
+            padding:1,
+            color:"white",
+        },
+        pagenotfound:{
+            width:"100%",
+            height:"100%",
+            display:"flex",
+            flexDirection:"column",
+            justifyContent:"center",
+            alignItems:"center",
+            margin:"auto",  
+
+
+        }
 }

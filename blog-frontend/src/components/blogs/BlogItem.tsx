@@ -7,6 +7,7 @@ import { FcCalendar } from "react-icons/fc";
 import {IconButton} from '@mui/material';
 import { useMutation } from '@apollo/client';
 import { DELETE_BLOG } from '../graphql/mutations';
+import { FaUser } from 'react-icons/fa';
 type Props = {
     blog: Blogtype;
     showActions?:boolean;
@@ -54,9 +55,16 @@ const BlogItem = (props: Props) => {
       <Box onClick = {handleclick} sx={{...blogStyles.cardheader,bgcolor:randombgcolor}}>
         <Box display={"flex"} gap={2}>
           <FcCalendar size={"29px"}/>
-          <Typography>{new Date(Number(props.blog.date)).toDateString()}</Typography>
+          <Typography sx = {{
+            fontSize:{lg:"20px",md:"18px",sm:"16px",xs:"12px"},
+            color:"white",
+            variant:"caption"
+
+          }}>
+  {new Date(Number(props.blog.date)).toDateString()}</Typography>
         </Box>
         <Typography variant="h4" sx={blogStyles.title}>{props.blog.title}</Typography>
+        <Typography sx = {blogStyles.author}> <FaUser color={"beige"} />{props.blog.user.name}</Typography>
       </Box>
       <Box sx={blogStyles.cardcontent}>
           <Typography sx={blogStyles.contentText}>{props.blog.content}</Typography>
