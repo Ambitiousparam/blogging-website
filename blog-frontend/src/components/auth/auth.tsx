@@ -18,7 +18,7 @@ type Inputs ={
 
 const Auth = () => {
   const navigate = useNavigate(); 
-  const isLoggedIn = useSelector((state: any) => state.isLoggedIn); // Correction: Using useSelector correctly
+  const isLoggedIn = useSelector((state: any) => state.isLoggedIn); 
   console.log(isLoggedIn);
   const { 
     register, 
